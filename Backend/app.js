@@ -15,7 +15,8 @@ app.use(cors());
 app.get('/test',(req,res)=>{
     res.send("This routing using for testing purpouse");
 });
-app.use('/api/v1/user',userRoutes);
+app.use('/api/v1/users',userRoutes);
+app.use('/api/v1/users',userRoutes);
 
 module.exports = app;
 
