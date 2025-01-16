@@ -30,17 +30,22 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-UserSchema.methods.generateAuthToken =()=>{
-    const token = jwt.sign({_id:this.id},process.env.JWT_SECERET);
+UserSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({ _id: this.id }, process.env.JWT_SECRET); // Make sure JWT_SECRET is correct in your environment variables
     return token;
-}
+};
+
 
 UserSchema.statics.hashPassword = async(password) =>{
     return await bcryptjs.hash(password,10);
 }
 
-UserSchema.methods.comparePassword = async(password)=>{
-    return await bcryptjs.compare(password,this.password);
-}
+UserSchema.methods.comparePassword = async function (password) {
+    if (!password || !this.password) {
+        throw new Error("Password or hashed password is missing");
+    }
+
+    return await bcryptjs.compare(password, this.password);
+};
 
 module.exports = mongoose.model("user", UserSchema)
