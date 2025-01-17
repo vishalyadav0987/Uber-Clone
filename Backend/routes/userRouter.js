@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const {body} = require("express-validator");
-const { registerUser, loginUser } = require("../controllers/userController");
+const { registerUser, loginUser, getUserProfile } = require("../controllers/userController");
+const { authUser } = require("../middleware/authMiddleware");
 
 router.post('/register',[
     // THIS ONLY CHECK  IF THE INPUT IS A STRING IS CORRECT OR NOT
@@ -17,6 +18,9 @@ router.post('/login',[
     body('email').isEmail().withMessage("Invalid Email"),
     body('password').isLength({min:8}).withMessage("Password must be at least 8 characters"),
 ],loginUser);
+
+
+router.get('/profile',authUser,getUserProfile);
 
 
 

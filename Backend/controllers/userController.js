@@ -62,7 +62,19 @@ const loginUser = async(req,res)=>{
     });
 }
 
+
+// GET USER PROFILE Function
+const getUserProfile = async(req,res)=>{
+    const user = req.user;
+    
+    res.status(200).json({
+        user,
+        success: true,
+    });
+};
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getUserProfile,
 }
