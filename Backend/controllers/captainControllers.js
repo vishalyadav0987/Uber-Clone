@@ -1,6 +1,6 @@
 const CaptainSchema = require('../models/CaptainSchema');
 const { validationResult } = require('express-validator');
-const captainService = require('../Services/captainServices')
+const {createCaptain} = require('../Services/captainServices')
 
 
 // REGISTER CAPTAIN FUNCTION
@@ -14,17 +14,17 @@ const registerCaptian = async (req, res) => {
 
     const isCaptianAlreadyExist = await CaptainSchema.findOne({ email: email });
 
-    if(isCaptianAlreadyExist){
-        return res.json({success:false,message:"User Already Exist."});
+    if (isCaptianAlreadyExist) {
+        return res.json({ success: false, message: "User Already Exist." });
     }
 
-    const captain = await captainService.createCaptain({
-        fullname: {
-            firstname: fullname.firstname,
-            lastname: fullname.lastname,
-        },
+    const hasshedPassword = await CaptainSchema.hashPassword(password);
+
+    const captain = await createCaptain({
+        firstname: fullname.firstname,
+        lastname: fullname.lastname,
         email,
-        password,
+        password:hasshedPassword,
         color: vehicle.color,
         plate: vehicle.plate,
         capacity: vehicle.capacity,
@@ -33,9 +33,10 @@ const registerCaptian = async (req, res) => {
 
     const token = captain.generateAuthToken();
 
-    res.status(201).json({ success: true, captain, token,
-        message:"Captain Succesfully register!"
-     });
+    res.status(201).json({
+        success: true, captain, token,
+        message: "Captain Succesfully register!"
+    });
 
 
 }// END OF REGISTER CAPTAIN FUNCTION

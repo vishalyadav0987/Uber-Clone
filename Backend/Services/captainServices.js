@@ -23,4 +23,6 @@ const createCaptain = async({firstname,lastname,email,password,color,plate,capac
     return captain;
 }
 
-module.exports = createCaptain;
+module.exports = {
+    createCaptain,
+};
