@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerCaptian,captainLogin, captainLogout } = require('../controllers/captainControllers');
+const { registerCaptian,captainLogin, captainLogout, getCaptainProfile } = require('../controllers/captainControllers');
 const router = express.Router();
 const {body} =require('express-validator');
 const {authCaptain} = require('../middleware/authMiddleware')
@@ -20,6 +20,7 @@ router.post('/login',[
     body('password').isLength({min:8}).withMessage('Password must be at least 3 characters'),
 ],captainLogin);
 router.get('/logout',authCaptain,captainLogout);
+router.get('/profile',authCaptain,getCaptainProfile);
 
 
 
