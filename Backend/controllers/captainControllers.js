@@ -42,6 +42,48 @@ const registerCaptian = async (req, res) => {
 }// END OF REGISTER CAPTAIN FUNCTION
 
 
+// CAPTAIN LOGIN FUNCTION
+
+const captainLogin = async(req,res)=>{
+    const errors = validationResult(req);
+    const {email,password} = req.body;
+    try {
+        if(!errors.isEmpty()){
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        if(!email || !password){
+            return res.status(400).json({ errors: "Email and password are required." });
+        }
+
+        const captain = await CaptainSchema.findOne({email}).select("+password");
+
+        if(!captain){
+            return res.status(400).json({ errors: "Invalid email or password." });
+        }
+
+        const isMatch = await captain.comparePassword(password,captain.password);
+
+        if(!isMatch){
+            return res.status(400).json({ errors: "Invalid email or password." });
+        }
+
+        const token = captain.generateAuthToken();
+
+        res.json({success:true,token,captain,message:"Captain Succesfully logged in."})
+
+    } catch (error) {
+        console.log("Something Went Wrong in Captain login ",error.message);
+        return res.json({
+            success:false,
+            message:error.message,
+        });
+        
+    }
+};
+
+
 module.exports = {
     registerCaptian,
+    captainLogin,
 }
