@@ -1,6 +1,7 @@
 const CaptainSchema = require('../models/CaptainSchema');
 const { validationResult } = require('express-validator');
-const {createCaptain} = require('../Services/captainServices')
+const {createCaptain} = require('../Services/captainServices');
+const BlackListToken = require('../models/BlackListToken')
 
 
 // REGISTER CAPTAIN FUNCTION
@@ -83,7 +84,31 @@ const captainLogin = async(req,res)=>{
 };
 
 
+
+// CAPTAIN LOGOUT FUNCTION
+const captainLogout = async(req,res)=>{
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+        if(!token){
+            return res.json({success:false,message:"Please login first."});
+        }
+        await BlackListToken.create({token});
+
+        res.clearCookie('token');
+
+        res.json({success:true,message:"Captain logged out."});
+    } catch (error) {
+        console.log("Something went wrong in captainLogut Function ",error.message);
+        return res.json({
+            success:false,
+            message:error.message,
+        });
+    }
+}
+
+
 module.exports = {
     registerCaptian,
     captainLogin,
+    captainLogout,
 }
