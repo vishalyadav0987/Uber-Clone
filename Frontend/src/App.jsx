@@ -1,10 +1,16 @@
 import React from 'react'
+import {Routes,Route} from 'react-router-dom'
+import UserRegisterPage from './Pages/UserRegisterPage/UserRegisterPage'
+import UserLoginPage from './Pages/UserLoginPage/UserLoginPage'
 
 const App = () => {
   return (
-    <div className="text-3xl font-bold underline">
-      App
-    </div>
+    <>
+      <Routes>
+        <Route path="/user-register" element={<UserRegisterPage/>} />
+        <Route path="/user-login" element={<UserLoginPage/>} />
+      </Routes>
+    </>
   )
 }
 

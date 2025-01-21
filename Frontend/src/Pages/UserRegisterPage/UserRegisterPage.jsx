@@ -54,18 +54,19 @@ const UserRegisterPage = () => {
                     rounded-sm w-full
                      bg-green-500 
                      text-white cursor-pointer hover:bg-green-700 font-medium'>
-                        Register as user
+                        Register
                     </button>
+                    <p className='text-white text-xs text-center'>If already have account <Link className='underline text-blue-500' to="/user-login">Login</Link></p>
                 </form>
                 <div>
-                <Link to='/user-login' 
+                <Link to='/captain-register' 
                     className='flex justify-center items-center border-none 
                     p-4 py-2 mt-3
                     rounded-sm w-full
                      bg-orange-500 
                      text-white cursor-pointer hover:bg-orange-700 font-medium mb-3'
                      >
-                        Login as user
+                        Sign in as Captain
                     </Link>
                     <p className='text-xs text-gray-500'>The site is protected bt XYX and firefox 
                         {" "}<span className='font-bold underline'>Privacy Policy</span> {" "}
