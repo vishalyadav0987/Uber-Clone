@@ -6,7 +6,7 @@ const UserLoginPage = () => {
     <>
       <div className="h-screen bg-[#212121] w-full">
         <img
-          className='w-24 py-5 px-4 pb-2 cursor-pointer'
+          className='w-32 py-6 px-6 pb-2 cursor-pointer'
           src="https://freelogopng.com/images/all_img/1659768779uber-logo-white.png"
           alt="" />
         <div className='w-full p-4 flex flex-col justify-between h-[90%]'>
@@ -39,7 +39,7 @@ const UserLoginPage = () => {
                      text-white cursor-pointer hover:bg-green-700 font-medium'>
               Login
             </button>
-             <p className='text-white text-xs text-center'>Create a new account? <Link className='underline text-blue-500' to="/user-register">Register</Link></p>
+            <p className='text-white text-xs text-center'>Create a new account? <Link className='underline text-blue-500' to="/user-register">Register</Link></p>
           </form>
           <div>
             <Link to='/captain-login'

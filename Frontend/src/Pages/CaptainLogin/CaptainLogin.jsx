@@ -7,10 +7,9 @@ const CaptainLogin = () => {
       <div className="h-screen bg-[#212121] w-full">
         <div className='flex items-center'>
           <img
-            className='w-24 py-5 px-4 pb-2 cursor-pointer'
-            src="https://freelogopng.com/images/all_img/1659768779uber-logo-white.png"
-            alt="" />
-          <span className='text-3xl mt-[15px] hover:cursor-pointer'>🚖</span>
+            className='w-32 py-6 px-6 pb-2 cursor-pointer'
+            src="https://freelogopng.com/images/all_img/1659768779uber-logo-white.png" alt="" />
+          <span className='text-3xl mt-[20px] -ml-3 hover:cursor-pointer'>🚖</span>
         </div>
         <div className='w-full p-4 flex flex-col justify-between h-[90%]'>
           <form className='w-full flex flex-col gap-4 mt-4'>
