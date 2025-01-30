@@ -4,20 +4,26 @@ const { createUser } = require('../Services/userServices');
 const BlackListToken = require('../models/BlackListToken')
 
 // REGISTER Function
-const registerUser = async(req,res)=>{
+const registerUser = async (req, res) => {
     // STORE VALIDATION ERRORS
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()})
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() })
     }
 
-    const {fullname,email,password} = req.body;
+    const { fullname, email, password } = req.body;
+
+    const userExsit = await UserSchema.findOne({ email: email });
+
+    if (userExsit) {
+        return res.status(400).json({ message: "Email already exist", success: false })
+    }
 
     const hashedPassword = await UserSchema.hashPassword(password);
 
     const user = await createUser({
-        firstname:fullname.firstname,
-        lastname:fullname.lastname,
+        firstname: fullname.firstname,
+        lastname: fullname.lastname,
         email,
         password: hashedPassword,
     });
@@ -28,30 +34,31 @@ const registerUser = async(req,res)=>{
         token,
         user,
         success: true,
+        message:"User Successfully registered."
     })
 }
 
 
 // LOGINUSER Function
-const loginUser = async(req,res)=>{
+const loginUser = async (req, res) => {
     // STORE VALIDATION ERRORS
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()})
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() })
     }
 
-    const {email,password} = req.body;
+    const { email, password } = req.body;
 
-    const user = await UserSchema.findOne({email}).select("+password");
+    const user = await UserSchema.findOne({ email }).select("+password");
 
-    if(!user){
-        return res.status(401).json({success:false,message:"Invalid Email or Password"})
+    if (!user) {
+        return res.status(401).json({ success: false, message: "Invalid Email or Password" })
     }
 
     const isMatch = await user.comparePassword(password);
 
-    if(!isMatch){
-        return res.status(401).json({success:false,message:"Invalid Email or Password"})
+    if (!isMatch) {
+        return res.status(401).json({ success: false, message: "Invalid Email or Password" })
     }
 
     const token = await user.generateAuthToken();
@@ -62,20 +69,21 @@ const loginUser = async(req,res)=>{
     //     secure:process.env.NODE_ENV === "production"
     // })
 
-    res.cookie('token',token);
+    res.cookie('token', token);
 
     res.status(200).json({
         token,
         user,
         success: true,
+        message:"User Successfully loggedIn."
     });
 }
 
 
 // GET USER PROFILE Function
-const getUserProfile = async(req,res)=>{
+const getUserProfile = async (req, res) => {
     const user = req.user;
-    
+
     res.status(200).json({
         user,
         success: true,
@@ -84,11 +92,11 @@ const getUserProfile = async(req,res)=>{
 
 
 // LOGOUT USER Function
-const logoutUser = async(req,res)=>{
+const logoutUser = async (req, res) => {
     res.clearCookie('token');
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
-    await BlackListToken.create({token});
-    res.status(200).json({success:true,message:"User Logout"});
+    await BlackListToken.create({ token });
+    res.status(200).json({ success: true, message:"User Successfully logged out." });
 }
 
 module.exports = {
